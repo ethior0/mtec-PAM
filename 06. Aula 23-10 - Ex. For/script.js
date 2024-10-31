@@ -1,16 +1,27 @@
 function CalculaTabuada() {
   const inputNum = document.querySelector(".inputNum");
+  const tabuada = document.querySelector(".tabuadaSection");
   const resultado = document.querySelector(".resultado");
-  const btnEnviar = document.querySelector(".btnEnviar");
+
+  const telaInicial = document.querySelector(".inicio");
+  const telaTabuada = document.querySelector(".container");
 
   this.inicia = () => {
-    this.pressionaBtnEnviar();
+    this.ativaBotoes();
+    this.escreveTabuadaPadrao();
     this.pressionaEnter();
   }
 
-  this.pressionaBtnEnviar = () => {
-    btnEnviar.addEventListener("click", () => {
-      this.verificaInput(inputNum.value);
+  this.ativaBotoes = () => {
+    document.addEventListener("click", (e) => {
+      el = e.target;
+      if (el.classList.contains("btnTabuada")) {
+        telaInicial.classList.add("oculto");
+        telaTabuada.classList.remove("oculto");
+      } else if (el.classList.contains("btnVoltar")) {
+        telaInicial.classList.remove("oculto");
+        telaTabuada.classList.add("oculto");
+      }
     });
   }
   
@@ -20,6 +31,17 @@ function CalculaTabuada() {
         this.verificaInput(inputNum.value);
       }
     });
+  }
+
+  this.escreveTabuadaPadrao = () => {
+    for (let i = 1; i <= 10; i++) {
+      const div = document.createElement("div");
+      div.classList.add("resultado");
+      for (let j = 1; j <= 10; j++) {
+        div.appendChild(this.criaP(i, j));
+      }
+      tabuada.appendChild(div);
+    }
   }
 
   this.verificaInput = (valor) => {
@@ -32,14 +54,16 @@ function CalculaTabuada() {
   this.escreveTabuada = (num) => {
     resultado.innerHTML = "";
     for (let i = 1; i <= 10; i++) {
-      this.criaP(i, num);
+      const p = this.criaP(i, num);
+      resultado.appendChild(p);
     }
   }
   
   this.criaP = (index, num) => {
     const p = document.createElement("p");
-    p.innerHTML = `${num} x ${index} = ${num*index}`;
-    resultado.appendChild(p);
+    p.innerHTML = `${num} <strong>x</strong> ${index} = ${num*index}`;
+    p.classList.add("tabuada");
+    return p;
   }
 
   this.limpaDisplay = () => {
